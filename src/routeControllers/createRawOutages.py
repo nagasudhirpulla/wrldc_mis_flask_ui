@@ -15,8 +15,7 @@ def createRawOutages():
     # in case of post request, create raw outages and return json response
     if request.method == 'POST':
         reqData = request.get_json()
-        outagesCreator = RawOutagesCreationHandler(
-            appConfig['rawOutagesCreationServiceUrl'])
+        outagesCreator = RawOutagesCreationHandler(appConfig['rawOutagesCreationServiceUrl'])
         startDate = dt.datetime.strptime(reqData['startDate'], '%Y-%m-%d')
         endDate = dt.datetime.strptime(reqData['endDate'], '%Y-%m-%d')
         resp = outagesCreator.createRawOutages(startDate, endDate)

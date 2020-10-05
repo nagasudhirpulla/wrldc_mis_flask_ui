@@ -17,7 +17,7 @@ from src.services.highVoltageNodeCreationHandler import HighVoltageNodeCreationH
 from src.services.lowVoltageNodeCreationHandler import LowVoltageNodeCreationHandler
 import datetime as dt
 import pandas as pd
-import json
+import json,requests
 import os
 from waitress import serve
 from src.routeControllers.createRawOutages import createRawOutagesPage
@@ -43,13 +43,31 @@ def hello():
 
 app.register_blueprint(createRawOutagesPage, url_prefix='/createRawOutages')
 
+@app.route('/viewOutages', methods=['GET', 'POST'])
+def viewOutages():
+    # in case of post request, create raw outages and return json response
+    if request.method == 'POST':
+        from_ = request.form.get('startDate')
+        to_ = request.form.get('endDate')
+        # reqData = request.get_json()
+        # outagesCreator = RawOutagesCreationHandler(appConfig['rawOutagesCreationServiceUrl'])
+        # startDate = dt.datetime.strptime(from_, '%Y-%m-%d')
+        # endDate = dt.datetime.strptime(to_, '%Y-%m-%d')
+        # resp = outagesCreator.createRawOutages(startDate, endDate)
+        resp = requests.post(appConfig['rawOutagesCreationServiceUrl'],json={"startDate":from_,"endDate":to_})
+        print(resp.json())
+        print(resp.status_code)
+        return render_template('viewOutages.html.j2',res=resp.json())
+
+    # in case of get request just return the html template
+    return render_template('viewOutages.html.j2')
+
 @app.route('/createRawPairAngles', methods=['GET', 'POST'])
 def createRawPairAngles():
     # in case of post request, create raw pair angles and return json response
     if request.method == 'POST':
         reqData = request.get_json()
-        pairAnglesCreator = RawPairAnglesCreationHandler(
-            appConfig['rawPairAnglesCreationServiceUrl'])
+        pairAnglesCreator = RawPairAnglesCreationHandler(appConfig['rawPairAnglesCreationServiceUrl'])
         startDate = dt.datetime.strptime(reqData['startDate'], '%Y-%m-%d')
         endDate = dt.datetime.strptime(reqData['endDate'], '%Y-%m-%d')
         resp = pairAnglesCreator.createRawPairAngles(startDate, endDate)
@@ -63,8 +81,7 @@ def createRawFreq():
     # in case of post request, create raw freq and return json response
     if request.method == 'POST':
         reqData = request.get_json()
-        rawFreqCreator = RawFrequencyCreationHandler(
-            appConfig['rawFrequencyCreationServiceUrl'])
+        rawFreqCreator = RawFrequencyCreationHandler(appConfig['rawFrequencyCreationServiceUrl'])
         startDate = dt.datetime.strptime(reqData['startDate'], '%Y-%m-%d')
         endDate = dt.datetime.strptime(reqData['endDate'], '%Y-%m-%d')
         resp = rawFreqCreator.createRawFrequency(startDate, endDate)
@@ -78,8 +95,7 @@ def createRawVolt():
     # in case of post request, create raw voltage and return json response
     if request.method == 'POST':
         reqData = request.get_json()
-        rawVoltCreator = RawVoltageCreationHandler(
-            appConfig['rawVoltageCreationServiceUrl'])
+        rawVoltCreator = RawVoltageCreationHandler(appConfig['rawVoltageCreationServiceUrl'])
         startDate = dt.datetime.strptime(reqData['startDate'], '%Y-%m-%d')
         endDate = dt.datetime.strptime(reqData['endDate'], '%Y-%m-%d')
         resp = rawVoltCreator.createRawVoltage(startDate, endDate)
@@ -93,8 +109,7 @@ def createDerFreq():
     # in case of post request, create derived frequency and return json response
     if request.method == 'POST':
         reqData = request.get_json()
-        derFreqCreator = DerivedFrequencyCreationHandler(
-            appConfig['derivedFrequencyCreationServiceUrl'])
+        derFreqCreator = DerivedFrequencyCreationHandler(appConfig['derivedFrequencyCreationServiceUrl'])
         startDate = dt.datetime.strptime(reqData['startDate'], '%Y-%m-%d')
         endDate = dt.datetime.strptime(reqData['endDate'], '%Y-%m-%d')
         resp = derFreqCreator.createDerivedFrequency(startDate, endDate)
@@ -108,8 +123,7 @@ def createDerVolt():
     # in case of post request, create derived voltage and return json response
     if request.method == 'POST':
         reqData = request.get_json()
-        derVoltCreator = DerivedVoltageCreationHandler(
-            appConfig['derivedVoltageCreationServiceUrl'])
+        derVoltCreator = DerivedVoltageCreationHandler(appConfig['derivedVoltageCreationServiceUrl'])
         startDate = dt.datetime.strptime(reqData['startDate'], '%Y-%m-%d')
         endDate = dt.datetime.strptime(reqData['endDate'], '%Y-%m-%d')
         resp = derVoltCreator.createDerivedVoltage(startDate, endDate)
@@ -123,8 +137,7 @@ def createDerVdi():
     # in case of post request, create derived voltage and return json response
     if request.method == 'POST':
         reqData = request.get_json()
-        derVdiCreator = DerivedVdiCreationHandler(
-            appConfig['derivedVdiCreationServiceUrl'])
+        derVdiCreator = DerivedVdiCreationHandler(appConfig['derivedVdiCreationServiceUrl'])
         startDate = dt.datetime.strptime(reqData['startDate'], '%Y-%m-%d')
         endDate = dt.datetime.strptime(reqData['endDate'], '%Y-%m-%d')
         resp = derVdiCreator.createDerivedVdi(startDate, endDate)
@@ -143,8 +156,7 @@ def createIegcViolMsgs():
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in ['.xlsx']:
                 return render_template('createIegcViolMsgs.html.j2', data={'message': 'Only .xlsx files are supported'})
-        iegcViolMsgsCreator = IegcViolMsgsCreationHandler(
-            appConfig['iegcViolMsgsCreationServiceUrl'])
+        iegcViolMsgsCreator = IegcViolMsgsCreationHandler(appConfig['iegcViolMsgsCreationServiceUrl'])
         resp = iegcViolMsgsCreator.createIegcViolMsgs(reqFile)
         return render_template('createIegcViolMsgs.html.j2', data={'message': json.dumps(resp)})
     # in case of get request just return the html template
@@ -161,8 +173,7 @@ def createTransmissionConstraints():
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in ['.xlsx']:
                 return render_template('createTransmissionConstraints.html.j2', data={'message': 'Only .xlsx files are supported'})
-        transmissionConstraintsCreator = TransmissionConstraintsCreationHandler(
-            appConfig['transmissionConstraintsCreationServiceUrl'])
+        transmissionConstraintsCreator = TransmissionConstraintsCreationHandler(appConfig['transmissionConstraintsCreationServiceUrl'])
         resp = transmissionConstraintsCreator.createTransmissionConstraints(
             reqFile)
         return render_template('createTransmissionConstraints.html.j2', data={'message': json.dumps(resp)})
@@ -180,8 +191,7 @@ def createIctConstraints():
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in ['.xlsx']:
                 return render_template('createIctConstraints.html.j2', data={'message': 'Only .xlsx files are supported'})
-        ictConstraintsCreator = IctConstraintsCreationHandler(
-            appConfig['ictConstraintsCreationServiceUrl'])
+        ictConstraintsCreator = IctConstraintsCreationHandler(appConfig['ictConstraintsCreationServiceUrl'])
         resp = ictConstraintsCreator.createIctConstraints(reqFile)
         return render_template('createIctConstraints.html.j2', data={'message': json.dumps(resp)})
     # in case of get request just return the html template
@@ -198,8 +208,7 @@ def createHighVoltageNode():
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in ['.xlsx']:
                 return render_template('createHighVoltageNode.html.j2', data={'message': 'Only .xlsx files are supported'})
-        highVoltageNodeCreator = HighVoltageNodeCreationHandler(
-            appConfig['highVoltageNodeCreationServiceUrl'])
+        highVoltageNodeCreator = HighVoltageNodeCreationHandler(appConfig['highVoltageNodeCreationServiceUrl'])
         resp = highVoltageNodeCreator.createHighVoltageNode(reqFile)
         return render_template('createHighVoltageNode.html.j2', data={'message': json.dumps(resp)})
     # in case of get request just return the html template
@@ -216,8 +225,7 @@ def createLowVoltageNode():
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in ['.xlsx']:
                 return render_template('createLowVoltageNode.html.j2', data={'message': 'Only .xlsx files are supported'})
-        lowVoltageNodeCreator = LowVoltageNodeCreationHandler(
-            appConfig['lowVoltageNodeCreationServiceUrl'])
+        lowVoltageNodeCreator = LowVoltageNodeCreationHandler(appConfig['lowVoltageNodeCreationServiceUrl'])
         resp = lowVoltageNodeCreator.createLowVoltageNode(reqFile)
         return render_template('createLowVoltageNode.html.j2', data={'message': json.dumps(resp)})
     # in case of get request just return the html template

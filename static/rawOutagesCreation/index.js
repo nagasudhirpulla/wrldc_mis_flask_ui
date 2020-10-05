@@ -14,11 +14,10 @@ const createRawOutages = function() {
             if (resp.hasOwnProperty('isSuccess') && resp.hasOwnProperty('message')) {
                 if (resp['isSuccess']) {
                     borderColor = 'green';
-                } else {
-                    borderColor = 'red';
                 }
                 $(respSelector).text(resp['message']);
-            } else {
+            } 
+            else {
                 $(respSelector).text(JSON.stringify(resp));
             }
             $(respSelector).css('border-color', borderColor);

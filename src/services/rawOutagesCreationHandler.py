@@ -23,8 +23,7 @@ class RawOutagesCreationHandler():
             "startDate": dt.datetime.strftime(startDate, '%Y-%m-%d'),
             "endDate": dt.datetime.strftime(endDate, '%Y-%m-%d')
         }
-        res = requests.post(self.rawOutagesCreationUrl,
-                            json=createRawOutagesPayload)
+        res = requests.post(self.rawOutagesCreationUrl,json=createRawOutagesPayload)
 
         operationResult: RawOutagesCreationResp = {
             "isSuccess": False,
