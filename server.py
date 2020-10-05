@@ -54,7 +54,7 @@ def viewOutages():
         # startDate = dt.datetime.strptime(from_, '%Y-%m-%d')
         # endDate = dt.datetime.strptime(to_, '%Y-%m-%d')
         # resp = outagesCreator.createRawOutages(startDate, endDate)
-        resp = requests.post(appConfig['rawOutagesCreationServiceUrl'],json={"startDate":from_,"endDate":to_})
+        resp = requests.get(appConfig['rawOutagesCreationServiceUrl2'],json={"startDate":from_,"endDate":to_})
         print(resp.json())
         print(resp.status_code)
         return render_template('viewOutages.html.j2',res=resp.json())

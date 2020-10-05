@@ -7,7 +7,7 @@
 
 {% block content %}
 {% if res %}
-<div id='respDiv' class="itme align-content-center mt-3">
+<div id='respDiv' class="item align-content-center mt-3">
 <p> msg: {{res}} </p>
 <div id='resDiv' class=" mt-3">
     <table id="genOutages" class="table table-bordered table-hover display w-auto" style="width:100%">
@@ -21,7 +21,6 @@
                 <th>To Time</th>
                 <th>To Date</th>
                 <th>Reason</th>
-                {# <th>Cummulative FDI</th> #}
             </tr>
         </thead>    
         <tbody>
@@ -29,12 +28,12 @@
             <tr>
                 <td>{{item.elName}}</td>
                 <td>{{item.owners}}</td>
-                <td>{{itme.capacity}}</td>
-                <td>{{itme.outageTime}}</td>
-                <td>{{itme.outageDate}}</td>
-                <td>{{itme.revivalTime}}</td>
-                <td>{{itme.revivalDate}}</td>
-                <td>{{itme.reason}}</td>
+                <td>{{item.capacity}}</td>
+                <td>{{item.outageTime}}</td>
+                <td>{{item.outageDate}}</td>
+                <td>{{item.revivalTime}}</td>
+                <td>{{item.revivalDate}}</td>
+                <td>{{item.reason}}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -45,7 +44,7 @@
 
 {% else %}
 <h1>View Outages stored in MIS Warehouse</h1>
-<div class="itme align-content-center">
+<div class="item align-content-center">
 <form method="POST">
     <input id="startDate" type="date" name="startDate">
     <input id="endDate" type="date" name="endDate" placeholder="yyyy-mm-dd">
