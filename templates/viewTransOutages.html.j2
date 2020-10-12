@@ -1,0 +1,123 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}View Outages{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h1>Major Transmission Element Outages</h1>
+<div class="row align-content-center">
+    <form class="form-inline" method="POST">
+        <label>Start Date :  </label>
+        <input name="startDate" class="form-inline bg-light border-1 mr-2" type="date" />
+        <label>End Date :  </label>
+        <input id="endDate" name="endDate" class="form-inline bg-light border-1 mr-3" type="date" placeholder="yyyy-mm-dd" />
+        <button id="viewOutagesBtn" class="btn btn-success btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-sync"></i>
+            </span>
+            <span class="text">View Outages</span>
+        </button>
+    </form>
+</div>
+
+{% if isSuccess %}
+<!--p> msg: {{res}} </p-->
+<div id='resDiv'>
+    <table id="genOutages" class="table table-bordered table-hover display w-auto" style="width:100%">
+        <thead>
+            <tr>
+                <th>Unit</th>
+                <th>Constituent/IPP</th>
+                <th>Capacity kV</th>
+                <th>From time</th>
+                <th>From Date</th>
+                <th>To Time</th>
+                <th>To Date</th>
+                <th>Reason</th>
+            </tr>
+        </thead>    
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{item.elName}}</td>
+                <td>{{item.owners}}</td>
+                <td>{{item.capacity}}</td>
+                <td>{{item.outageTime}}</td>
+                <td>{{item.outageDate}}</td>
+                <td>{{item.revivalTime}}</td>
+                <td>{{item.revivalDate}}</td>
+                <td>{{item.reason}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Unit</th>
+                <th>Constituent/IPP</th>
+                <th>Capacity kV</th>
+                <th>From time</th>
+                <th>From Date</th>
+                <th>To Time</th>
+                <th>To Date</th>
+                <th>Reason</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% else %}
+<h1> {{data}}</h1>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+        // Setup - add a text input to each footer cell
+            $('#genOutages tfoot th').each(function () {
+            //var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Search" />');
+            });
+            var filesTable = $('#genOutages').DataTable({
+                fixedHeader: true,
+                "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+                "pageLength": 50,
+                dom: 'Bfrtip',
+                "order": [[0, "asc"]],
+                buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
+            });
+            var r = $('#genOutages tfoot tr');
+            r.find('th').each(function () {
+                $(this).css('padding', '3px');
+            });
+            $('#genOutages thead').append(r);
+            // Apply the filter
+            // https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/examples/api/multi_filter.html
+            $("#genOutages thead input").on('keyup change', function () {
+            filesTable
+                .column($(this).parent().index() + ':visible')
+                .search(this.value)
+                .draw();
+            });
+        });
+    </script>
+    <style>
+        thead input {
+            padding: 2px;
+            box-sizing: border-box;
+            font-size: small;
+            width: 100%
+        }
+    </style>
+{% endblock %} 

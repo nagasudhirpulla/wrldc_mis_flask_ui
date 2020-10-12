@@ -4,6 +4,9 @@ This is the web server that acts as a service that creates outages raw data
 from src.appConfig import getConfig
 from flask import Flask, request, jsonify, render_template
 from src.services.rawOutagesCreationHandler import RawOutagesCreationHandler
+from src.services.viewGenOutagesHandler import ViewGenOutagesHandler
+from src.services.viewTransOutagesHandler import ViewTransOutagesHandler
+from src.services.viewLongOutagesHandler import ViewLongOutagesHandler
 from src.services.rawPairAnglesCreationHandler import RawPairAnglesCreationHandler
 from src.services.rawFreqCreationHandler import RawFrequencyCreationHandler
 from src.services.rawVoltCreationHandler import RawVoltageCreationHandler
@@ -43,24 +46,41 @@ def hello():
 
 app.register_blueprint(createRawOutagesPage, url_prefix='/createRawOutages')
 
-@app.route('/viewOutages', methods=['GET', 'POST'])
-def viewOutages():
-    # in case of post request, create raw outages and return json response
+@app.route('/viewGenOutages', methods=['GET', 'POST'])
+def viewGenOutages():
+    # in case of post request, create raw pair angles and return json response
     if request.method == 'POST':
         from_ = request.form.get('startDate')
         to_ = request.form.get('endDate')
-        # reqData = request.get_json()
-        # outagesCreator = RawOutagesCreationHandler(appConfig['rawOutagesCreationServiceUrl'])
-        # startDate = dt.datetime.strptime(from_, '%Y-%m-%d')
-        # endDate = dt.datetime.strptime(to_, '%Y-%m-%d')
-        # resp = outagesCreator.createRawOutages(startDate, endDate)
-        resp = requests.get(appConfig['rawOutagesCreationServiceUrl2'],json={"startDate":from_,"endDate":to_})
-        print(resp.json())
-        print(resp.status_code)
-        return render_template('viewOutages.html.j2',res=resp.json())
-
+        outagesViewer = ViewGenOutagesHandler(appConfig['rawOutagesCreationServiceUrl'])
+        resp = outagesViewer.viewGenOutages(from_,to_,"Gen")
+        return render_template('viewGenOutages.html.j2',data=resp['message'],isSuccess=resp['isSuccess'] )
     # in case of get request just return the html template
-    return render_template('viewOutages.html.j2')
+    return render_template('viewGenOutages.html.j2')
+
+@app.route('/viewTransOutages', methods=['GET', 'POST'])
+def viewTransOutages():
+    # in case of post request, create raw pair angles and return json response
+    if request.method == 'POST':
+        from_ = request.form.get('startDate')
+        to_ = request.form.get('endDate')
+        outagesViewer = ViewTransOutagesHandler(appConfig['rawOutagesCreationServiceUrl'])
+        resp = outagesViewer.viewTransOutages(from_,to_,"Trans")
+        return render_template('viewTransOutages.html.j2',data=resp['message'],isSuccess=resp['isSuccess'] )
+    # in case of get request just return the html template
+    return render_template('viewTransOutages.html.j2')
+
+@app.route('/viewLongOutages', methods=['GET', 'POST'])
+def viewLongOutages():
+    # in case of post request, create raw pair angles and return json response
+    if request.method == 'POST':
+        from_ = request.form.get('startDate')
+        to_ = request.form.get('endDate')
+        outagesViewer = ViewLongOutagesHandler(appConfig['rawOutagesCreationServiceUrl'])
+        resp = outagesViewer.viewLongOutages(from_,to_,"Long")
+        return render_template('viewLongOutages.html.j2',data=resp['message'],isSuccess=resp['isSuccess'] )
+    # in case of get request just return the html template
+    return render_template('viewLongOutages.html.j2')
 
 @app.route('/createRawPairAngles', methods=['GET', 'POST'])
 def createRawPairAngles():

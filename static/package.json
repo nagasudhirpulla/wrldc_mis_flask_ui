@@ -20,8 +20,11 @@
     "@fortawesome/fontawesome-free": "^5.14.0",
     "bootstrap": "^4.5.2",
     "datatables.net": "^1.10.22",
+    "datatables.net-buttons-dt": "^1.6.4",
     "datatables.net-dt": "^1.10.22",
     "jquery": "^3.5.1",
+    "jszip": "^3.5.0",
+    "pdfmake": "^0.1.68",
     "startbootstrap-sb-admin-2": "^4.1.1"
   }
 }
