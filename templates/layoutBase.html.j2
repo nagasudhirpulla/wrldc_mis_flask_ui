@@ -50,6 +50,7 @@
                     </button>
 
                     <!-- Topbar Navbar -->
+                    <span class="mr-2 d-none d-md-inline text-current">Western Regional Load Despatch Centre, POSOCO</span>
                     {% include '_loginPartial.html.j2' %}
                 </nav>
                 <!-- End of Topbar -->
@@ -75,12 +76,23 @@
     <script src="{{ url_for('static', filename='node_modules/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='node_modules/startbootstrap-sb-admin-2/js/sb-admin-2.min.js') }}"></script>
-    <script>
+    <!--<script>
         (function () {
             document.getElementById("sidebarToggle").click();
         })();
-    </script>
+    </script>-->
     <link href="{{ url_for('static', filename='site.css') }}" rel="stylesheet" type="text/css"/>
     {% block scripts %}{% endblock %}
+    <style>
+        .table{
+            color: #111;
+        }
+        .table-hover tbody tr:hover{
+            color: #111;
+        }
+        body{
+            color:#555;
+        }
+    </style>
 </body>
 </html>

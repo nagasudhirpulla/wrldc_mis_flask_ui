@@ -9,28 +9,14 @@
 {% endif %}
 <!-- Nav Item - Dashboard -->
 <li class="nav-item">
-    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseOutages" aria-expanded="false" aria-controls="collapseOutages">
-        <span>Outages</span>
-    </a>
-    <div id="collapseOutages" class="collapse show" aria-labelledby="headingOutages" data-parent="#accordionSidebar" style="">
-        <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/createRawOutages">Create Raw Outages</a>
-        <a class="collapse-item" href="/outages">Show Outages</a>
-        <a class="collapse-item" href="/transOutages">Show Trans. Outages</a>
-        <a class="collapse-item" href="./majorGenOutages">Show Major Gen. Outages</a>
-        <a class="collapse-item" href="./longUnrevForcedOutages">Show Long Time Unrev. Forced Outages</a>
-        </div>
-    </div>
-</li>
-<li class="nav-item">
     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseFreq" aria-expanded="false" aria-controls="collapseFreq">
         <span>Frequency</span>
     </a>
-    <div id="collapseFreq" class="collapse show" aria-labelledby="headingFreq" data-parent="#accordionSidebar" style="">
+    <div id="collapseFreq" class="collapse" aria-labelledby="headingFreq" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/createRawFreq">Create Raw Freq.</a>
-        <a class="collapse-item" href="/createDerFreq">Create Der. Freq.</a>
-        <a class="collapse-item" href="/derivedFreq">Show Daily Freq.</a>
+        <a class="collapse-item" href="/createRawFreq">Create Raw Frequency</a>
+        <a class="collapse-item" href="/createDerFreq">Create Derived Frequency</a>
+        <a class="collapse-item" href="/derivedFreq">Show Daily Frequency</a>
         </div>
     </div>
 </li>
@@ -38,41 +24,27 @@
     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseVolt" aria-expanded="false" aria-controls="collapseVolt">
         <span>Voltage</span>
     </a>
-    <div id="collapseVolt" class="collapse show" aria-labelledby="headingVolt" data-parent="#accordionSidebar" style="">
+    <div id="collapseVolt" class="collapse" aria-labelledby="headingVolt" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/createRawVolt">Create Raw Volt.</a>
-        <a class="collapse-item" href="/createDerVolt">Create Der. Volt.</a>
-        <a class="collapse-item" href="/createDerVdi">Create Der. VDI</a>
+        <a class="collapse-item" href="/createRawVolt">Create Raw Voltage</a>
+        <a class="collapse-item" href="/createDerVolt">Create Derived Voltage</a>
+        <a class="collapse-item" href="/createDerVdi">Create Derived VDI</a>
         </div>
     </div>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseIViol" aria-expanded="false" aria-controls="collapseIViol">
-        <span>IEGC Viol. Msgs</span>
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseOutages" aria-expanded="false" aria-controls="collapseOutages">
+        <span>Outages</span>
     </a>
-    <div id="collapseIViol" class="collapse show" aria-labelledby="headingIViol" data-parent="#accordionSidebar" style="">
+    <div id="collapseOutages" class="collapse" aria-labelledby="headingOutages" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/createIegcViolMsgs">Create IEGC Viol. Msgs</a>
-        <a class="collapse-item" href="/iegcViolMsgs">Show IEGC Viol. Msgs</a>
+        <a class="collapse-item" href="/createRawOutages">Create Raw Outages</a>
+        <a class="collapse-item" href="/outages">Show Outages</a>
+        <a class="collapse-item" href="/transOutages">Show Transmission <br/>Outages</a>
+        <a class="collapse-item" href="./majorGenOutages">Show Major <br/>Generator Outages</a>
+        <a class="collapse-item" href="./longUnrevForcedOutages">Show Long Time <br/>Unrevived Forced <br/>Outages</a>
         </div>
     </div>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseWReps" aria-expanded="false" aria-controls="collapseWReps">
-        <span>Weekly Reports</span>
-    </a>
-    <div id="collapseWReps" class="collapse show" aria-labelledby="headingWReps" data-parent="#accordionSidebar" style="">
-        <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/weeklyReports/create">Create Weekly Reports</a>
-        <a class="collapse-item" href="/weeklyReports/list">Show Weekly Reports</a>
-        </div>
-    </div>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href='/createRawPairAngles'>
-        <i class="fas fa-th-large"></i>
-        <span>Raw Pair Angles</span>
-    </a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href='/createTransmissionConstraints'>
@@ -83,18 +55,46 @@
 <li class="nav-item">
     <a class="nav-link" href='/createIctConstraints'>
         <i class="fas fa-th-large"></i>
-        <span>Raw Ict Constraints</span>
+        <span>Raw ICT Constraints</span>
     </a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href='/createHighVoltageNode'>
         <i class="fas fa-th-large"></i>
-        <span>High Voltage Data</span>
+        <span>High Voltage Nodes</span>
     </a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href='/createLowVoltageNode'>
         <i class="fas fa-th-large"></i>
-        <span>Low Voltage Data</span>
+        <span>Low Voltage Nodes</span>
     </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseIViol" aria-expanded="false" aria-controls="collapseIViol">
+        <span>IEGC Violation Msgs</span>
+    </a>
+    <div id="collapseIViol" class="collapse" aria-labelledby="headingIViol" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/createIegcViolMsgs">Create IEGC <br/>Violation Msgs</a>
+        <a class="collapse-item" href="/iegcViolMsgs">Show IEGC <br/>Violation Msgs</a>
+        </div>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href='/createRawPairAngles'>
+        <i class="fas fa-th-large"></i>
+        <span>Raw Pair Angles</span>
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseWReps" aria-expanded="false" aria-controls="collapseWReps">
+        <span>Weekly Reports</span>
+    </a>
+    <div id="collapseWReps" class="collapse" aria-labelledby="headingWReps" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/weeklyReports/create">Create Weekly Reports</a>
+        <a class="collapse-item" href="/weeklyReports/list">Show Weekly Reports</a>
+        </div>
+    </div>
 </li>
