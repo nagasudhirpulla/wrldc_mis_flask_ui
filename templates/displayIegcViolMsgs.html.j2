@@ -1,0 +1,114 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}IEGC Violation Messages{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h1>Display IEGC Violation Messages</h1>
+<div class="row align-content-center">
+    <form class="form-inline" method="POST">
+        <label for="startDate">Start Date</label>
+        <input name="startDate" class="form-inline bg-light border-1 mr-2" type="date" />
+        <label for="endDate">End Date</label>
+        <input name="endDate" class="form-inline bg-light border-1 mr-3" type="date" />
+        <button id="fetchIegcViolMsgsBtn" class="btn btn-success btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-sync"></i>
+            </span>
+            <span class="text">Show Data</span>
+        </button>
+    </form>
+</div>
+
+{% if data%}
+    <div>
+        <table id="example" class="table table-bordered table-hover display w-auto">
+            <thead>
+                <tr>
+                <th class="th-sm">Messages</th>
+                <th class="th-sm">Date</th>
+                <th class="th-sm">Entity</th>
+                <th class="th-sm">Schedule</th>
+                <th class="th-sm">Drawal</th>
+                <th class="th-sm">Deviation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <th>{{row['msgId']}}</th>
+                    <th>{{row['date']}}</th>
+                    <th>{{row['entity']}}</th>
+                    <th>{{row['schedule']}}</th>
+                    <th>{{row['drawal']}}</th>
+                    <th>{{row['deviation']}}</th>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                <th>Messages</th>
+                <th>Date</th>
+                <th>Entity</th>
+                <th>Schedule</th>
+                <th>Drawal</th>
+                <th>Deviation</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script>
+    $(document).ready(function() {
+        // Setup - add a text input to each footer cell
+        $('#example tfoot th').each(function () {
+            //var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Search" />');
+        });
+        var filesTable = $('#example').DataTable({
+            fixedHeader: true,
+            "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            "pageLength": 50,
+            dom: 'Bfrtip',
+            "order": [[0, "asc"]],
+            buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
+        });
+        var r = $('#example tfoot tr');
+        r.find('th').each(function () {
+            $(this).css('padding', '3px');
+        });
+        $('#example thead').append(r);
+        // Apply the filter
+        // https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/examples/api/multi_filter.html
+        $("#example thead input").on('keyup change', function () {
+            filesTable
+                .column($(this).parent().index() + ':visible')
+                .search(this.value)
+                .draw();
+        });
+    });
+    </script>
+    <style>
+        thead input {
+            padding: 2px;
+            box-sizing: border-box;
+            font-size: small;
+            width: 100%
+        }
+    </style>
+
+{% endblock %}

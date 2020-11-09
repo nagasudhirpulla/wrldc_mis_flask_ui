@@ -9,51 +9,69 @@
 {% endif %}
 <!-- Nav Item - Dashboard -->
 <li class="nav-item">
-    <a class="nav-link" href='/createRawOutages'>
-        <i class="fas fa-th-large"></i>
-        <span>Raw Outages</span>
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseOutages" aria-expanded="false" aria-controls="collapseOutages">
+        <span>Outages</span>
     </a>
+    <div id="collapseOutages" class="collapse show" aria-labelledby="headingOutages" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/createRawOutages">Create Raw Outages</a>
+        <a class="collapse-item" href="/outages">Show Outages</a>
+        <a class="collapse-item" href="/transOutages">Show Trans. Outages</a>
+        <a class="collapse-item" href="./majorGenOutages">Show Major Gen. Outages</a>
+        <a class="collapse-item" href="./longUnrevForcedOutages">Show Long Time Unrev. Forced Outages</a>
+        </div>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseFreq" aria-expanded="false" aria-controls="collapseFreq">
+        <span>Frequency</span>
+    </a>
+    <div id="collapseFreq" class="collapse show" aria-labelledby="headingFreq" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/createRawFreq">Create Raw Freq.</a>
+        <a class="collapse-item" href="/createDerFreq">Create Der. Freq.</a>
+        <a class="collapse-item" href="/derivedFreq">Show Daily Freq.</a>
+        </div>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseVolt" aria-expanded="false" aria-controls="collapseVolt">
+        <span>Voltage</span>
+    </a>
+    <div id="collapseVolt" class="collapse show" aria-labelledby="headingVolt" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/createRawVolt">Create Raw Volt.</a>
+        <a class="collapse-item" href="/createDerVolt">Create Der. Volt.</a>
+        <a class="collapse-item" href="/createDerVdi">Create Der. VDI</a>
+        </div>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseIViol" aria-expanded="false" aria-controls="collapseIViol">
+        <span>IEGC Viol. Msgs</span>
+    </a>
+    <div id="collapseIViol" class="collapse show" aria-labelledby="headingIViol" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/createIegcViolMsgs">Create IEGC Viol. Msgs</a>
+        <a class="collapse-item" href="/iegcViolMsgs">Show IEGC Viol. Msgs</a>
+        </div>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseWReps" aria-expanded="false" aria-controls="collapseWReps">
+        <span>Weekly Reports</span>
+    </a>
+    <div id="collapseWReps" class="collapse show" aria-labelledby="headingWReps" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="/weeklyReports/create">Create Weekly Reports</a>
+        <a class="collapse-item" href="/weeklyReports/list">Show Weekly Reports</a>
+        </div>
+    </div>
 </li>
 <li class="nav-item">
     <a class="nav-link" href='/createRawPairAngles'>
         <i class="fas fa-th-large"></i>
-        <span>Raw PairAngles</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href='/createRawFreq'>
-        <i class="fas fa-th-large"></i>
-        <span>Raw Frequency</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href='/createRawVolt'>
-        <i class="fas fa-th-large"></i>
-        <span>Raw Voltage</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href='/createDerFreq'>
-        <i class="fas fa-th-large"></i>
-        <span>Derived Frequency</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href='/createDerVolt'>
-        <i class="fas fa-th-large"></i>
-        <span>Derived Voltage</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href='/createDerVdi'>
-        <i class="fas fa-th-large"></i>
-        <span>Derived VDI</span>
-    </a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href='/createIegcViolMsgs'>
-        <i class="fas fa-th-large"></i>
-        <span>IEGC Violation Msgs</span>
+        <span>Raw Pair Angles</span>
     </a>
 </li>
 <li class="nav-item">

@@ -1,0 +1,28 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Create Weekly Report{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h1>Create MIS weekly report</h1>
+<div class="row align-content-center">
+    <input id="startDate" class="form-inline bg-light border-1 mr-2" type="date" />
+    <input id="endDate" class="form-inline bg-light border-1 mr-3" type="date" />
+    <button id="createWeeklyReportBtn" class="btn btn-success btn-icon-split">
+        <span class="icon text-white-50">
+            <i class="fas fa-sync"></i>
+        </span>
+        <span class="text">Create Report</span>
+    </button>
+</div>
+<div id='respDiv' class="row align-content-center mt-3"></div>
+
+<br/>
+<a class="link" href='/weeklyReports/list'>Show Weekly Reports</a>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='weeklyReportCreation/index.js') }}"></script>
+{% endblock %}

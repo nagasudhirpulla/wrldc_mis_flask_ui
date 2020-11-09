@@ -19,7 +19,11 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
     "bootstrap": "^4.5.2",
+<<<<<<< HEAD
     "datatables.net": "^1.10.22",
+=======
+    "datatables.net-bs4": "^1.10.22",
+>>>>>>> 71d203e88ecdcc20a6e2fc42a4a586c180c1b923
     "datatables.net-buttons-dt": "^1.6.4",
     "datatables.net-dt": "^1.10.22",
     "jquery": "^3.5.1",

@@ -1,0 +1,82 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Display Frequency Profile{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h1>Display Frequency Profile</h1>
+<div class="row align-content-center">
+    <form class="form-inline" method="POST">
+        <input name="startDate" id="startDate" class="form-inline bg-light border-1 mr-2" type="date" />
+        <input name ="endDate" id="endDate" class="form-inline bg-light border-1 mr-3" type="date" />
+        <button id="displayDerFreqBtn" class="btn btn-success btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-sync"></i>
+            </span>
+            <span class="text">Display Data</span>
+        </button>
+    </form>
+</div>
+{% if method == 'POST' %}
+{% if data.isSuccess %}
+<div class="h5 mt-3">
+{{"Cummulative FDI = " +("%.2f"|format(data.data.weeklyFDI))}}
+</div>
+<table id="derivedFrequency" class="table table-bordered table-hover display w-auto">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Maximum Inst.</th>
+            <th>Minimum Inst.</th>
+            <th>Average</th>
+            <th>Less Than 49.9</th>
+            <th>Between 49.9 and 50.05</th>
+            <th>Greater Than 50.05</th>
+            <th>% of Time Freq. remained outside IEGC Band</th>
+            <th>Num of hrs Freq. remained outside IEGC Band</th> 
+            <th>FDI</th>
+            {# <th>Cummulative FDI</th> #}
+        </tr>
+    </thead>    
+    <tbody>
+        {% for row in data.data.rows %}
+        <tr>
+            <td>{{row.date}}</td>
+            <td>{{"%.2f"|format(row.max)}}</td>
+            <td>{{"%.2f"|format(row.min)}}</td>
+            <td>{{"%.2f"|format(row.avg)}}</td>
+            <td>{{"%.2f"|format(row.less)}}</td>
+            <td>{{"%.2f"|format(row.bw)}}</td>
+            <td>{{"%.2f"|format(row.great)}}</td>
+            <td>{{"%.2f"|format(row.out)}}</td>
+            <td>{{"%.2f"|format(row.outHrs)}}</td>
+            <td>{{"%.2f"|format(row.fdi)}}</td>
+        </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-danger mt-5" >
+  <strong>Something went wrong</strong> Frequency Profile Display Unsuccessful
+</div>
+{% endif %}
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#derivedFrequency').DataTable();
+        });
+    </script>
+{% endblock %}

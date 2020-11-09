@@ -1,0 +1,120 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Long Time Unrevived Forced Outages{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h1>Long Time Unrevived Forced Outages</h1>
+<div class="row align-content-center">
+    <form class="form-inline" method="POST">
+        <label for="startDate">Start Date</label>
+        <input name="startDate" class="form-inline bg-light border-1 mr-2" type="date" />
+        <label for="endDate">End Date</label>
+        <input name="endDate" class="form-inline bg-light border-1 mr-3" type="date" />
+        <button id="fetchLongUnrevForcedOutagesBtn" class="btn btn-success btn-icon-split">
+            <span class="icon text-white-50">
+                <i class="fas fa-sync"></i>
+            </span>
+            <span class="text">Show Data</span>
+        </button>
+    </form>
+</div>
+
+{% if data and data['isSuccess']%}
+    <div>
+        <table id="displayTable" class="table table-bordered table-hover display w-auto">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Owners</th>
+                    <th>Volt. Level</th>
+                    <th>Ouatge Date</th>
+                    <th>Ouatge Time</th>
+                    <th>Revival Date</th>
+                    <th>Revival Time</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>    
+            <tbody>
+                {% for item in data['data'] %}
+                <tr>
+                    <td>{{item.elName}}</td>
+                    <td>{{item.owners}}</td>
+                    <td>{{item.capacity}}</td>
+                    <td>{{item.outageDate}}</td>
+                    <td>{{item.outageTime}}</td>
+                    <td>{{item.revivalDate}}</td>
+                    <td>{{item.revivalTime}}</td>
+                    <td>{{item.reason}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>Owners</th>
+                    <th>Volt. Level</th>
+                    <th>Ouatge Date</th>
+                    <th>Ouatge Time</th>
+                    <th>Revival Date</th>
+                    <th>Revival Time</th>
+                    <th>Reason</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='node_modules/datatables.net-dt/css/jquery.dataTables.min.css') }}" />
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/jszip/dist/jszip.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='node_modules/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script>
+    $(document).ready(function() {
+        // Setup - add a text input to each footer cell
+        $('#displayTable tfoot th').each(function () {
+            //var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Search" />');
+        });
+        var filesTable = $('#displayTable').DataTable({
+            fixedHeader: true,
+            "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            "pageLength": 50,
+            dom: 'Bfrtip',
+            "order": [[0, "asc"]],
+            buttons: ['pageLength', 'csv', 'excel', 'pdf', 'print']
+        });
+        var r = $('#displayTable tfoot tr');
+        r.find('th').each(function () {
+            $(this).css('padding', '3px');
+        });
+        $('#displayTable thead').append(r);
+        // Apply the filter
+        // https://www.jqueryscript.net/demo/DataTables-Jquery-Table-Plugin/examples/api/multi_filter.html
+        $("#displayTable thead input").on('keyup change', function () {
+            filesTable
+                .column($(this).parent().index() + ':visible')
+                .search(this.value)
+                .draw();
+        });
+    });
+    </script>
+    <style>
+        thead input {
+            padding: 2px;
+            box-sizing: border-box;
+            font-size: small;
+            width: 100%
+        }
+    </style>
+
+{% endblock %}

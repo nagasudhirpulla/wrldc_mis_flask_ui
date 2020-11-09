@@ -18,12 +18,20 @@ from src.services.transmissionConstraintsHandler import TransmissionConstraintsC
 from src.services.ictConstraintsHandler import IctConstraintsCreationHandler
 from src.services.highVoltageNodeCreationHandler import HighVoltageNodeCreationHandler
 from src.services.lowVoltageNodeCreationHandler import LowVoltageNodeCreationHandler
+from src.utils.stringUtils import getReadableByteSize, getTimeStampString
 import datetime as dt
 import pandas as pd
 import json,requests
 import os
 from waitress import serve
 from src.routeControllers.createRawOutages import createRawOutagesPage
+from src.routeControllers.weeklyReports import weeklyReportsPage
+from src.routeControllers.derivedFreq import derviedFreqPage
+from src.routeControllers.iegcViolMsgs import iegcViolMsgsPage
+from src.routeControllers.outages import outagesPage
+from src.routeControllers.transOutages import transOutagesPage
+from src.routeControllers.majorGenOutages import majorGenOutagesPage
+from src.routeControllers.longTimeUnrevForcedOutages import longUnrevForcedOutagesPage
 
 app = Flask(__name__)
 
@@ -44,7 +52,17 @@ app.config['UPLOAD_EXTENSIONS'] = ['.xlsx']
 def hello():
     return render_template('home.html.j2')
 
+
 app.register_blueprint(createRawOutagesPage, url_prefix='/createRawOutages')
+app.register_blueprint(derviedFreqPage, url_prefix='/derivedFreq')
+app.register_blueprint(iegcViolMsgsPage, url_prefix='/iegcViolMsgs')
+app.register_blueprint(outagesPage, url_prefix='/outages')
+app.register_blueprint(transOutagesPage, url_prefix='/transOutages')
+app.register_blueprint(majorGenOutagesPage, url_prefix='/majorGenOutages')
+app.register_blueprint(longUnrevForcedOutagesPage, url_prefix='/longUnrevForcedOutages')
+app.register_blueprint(weeklyReportsPage,
+                       url_prefix='/weeklyReports')
+
 
 @app.route('/viewGenOutages', methods=['GET', 'POST'])
 def viewGenOutages():
