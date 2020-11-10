@@ -14,14 +14,14 @@ iegcViolMsgsPage = Blueprint('iegcViolMsgs', __name__,
 def displayIegcViolMsgs():
     # in case of post request, fetch iegc viol msgs and return json response
     if request.method == 'POST':
-        startDate = request.form.get('startDate')
-        endDate = request.form.get('endDate')
+        startDateStr = request.form.get('startDate')
+        endDateStr = request.form.get('endDate')
         iegcViolMsgsFetcher = IegcviolMsgsFetcher(
             appConfig['iegcViolMsgsFetchUrl'])
-        startDate = dt.datetime.strptime(startDate, '%Y-%m-%d')
-        endDate = dt.datetime.strptime(endDate, '%Y-%m-%d')
+        startDate = dt.datetime.strptime(startDateStr, '%Y-%m-%d')
+        endDate = dt.datetime.strptime(endDateStr, '%Y-%m-%d')
         resp = iegcViolMsgsFetcher.fetchIegcviolMsgs(startDate, endDate)
         msg= resp['data']
-        return render_template('displayIegcViolMsgs.html.j2', data= msg)
+        return render_template('displayIegcViolMsgs.html.j2', data= msg, startDate=startDateStr, endDate=endDateStr)
     # in case of get request just return the html template
     return render_template('displayIegcViolMsgs.html.j2')

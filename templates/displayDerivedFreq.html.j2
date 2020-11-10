@@ -9,8 +9,8 @@
 <h1>Display Frequency Profile</h1>
 <div class="row align-content-center">
     <form class="form-inline" method="POST">
-        <input name="startDate" id="startDate" class="form-inline bg-light border-1 mr-2" type="date" />
-        <input name ="endDate" id="endDate" class="form-inline bg-light border-1 mr-3" type="date" />
+        <input name="startDate" id="startDate" class="form-inline bg-light border-1 mr-2" type="date" {% if startDate %} value="{{startDate}}" {% endif %}/>
+        <input name ="endDate" id="endDate" class="form-inline bg-light border-1 mr-3" type="date" {% if endDate %} value="{{endDate}}" {% endif %}/>
         <button id="displayDerFreqBtn" class="btn btn-success btn-icon-split">
             <span class="icon text-white-50">
                 <i class="fas fa-sync"></i>

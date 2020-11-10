@@ -15,13 +15,13 @@ majorGenOutagesPage = Blueprint('majorGenOutages', __name__,
 def displayMajorGenOutages():
     # in case of post request, fetch major generating unit outages and return json response
     if request.method == 'POST':
-        startDate = request.form.get('startDate')
-        endDate = request.form.get('endDate')
+        startDateStr = request.form.get('startDate')
+        endDateStr = request.form.get('endDate')
         majorGenOutagesFetcher = MajorGenOutagesFetcher(
             appConfig['majorGenOutagesFetchUrl'])
-        startDate = dt.datetime.strptime(startDate, '%Y-%m-%d')
-        endDate = dt.datetime.strptime(endDate, '%Y-%m-%d')
+        startDate = dt.datetime.strptime(startDateStr, '%Y-%m-%d')
+        endDate = dt.datetime.strptime(endDateStr, '%Y-%m-%d')
         resp = majorGenOutagesFetcher.fetchMajorGenOutages(startDate, endDate)
-        return render_template('displayMajorGenOutages.html.j2', data=resp)
+        return render_template('displayMajorGenOutages.html.j2', data=resp, startDate=startDateStr, endDate=endDateStr)
     # in case of get request just return the html template
     return render_template('displayMajorGenOutages.html.j2')
