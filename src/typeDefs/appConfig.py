@@ -25,3 +25,6 @@ class IAppConfig(TypedDict):
     transOutagesFetchUrl: str
     majorGenOutagesFetchUrl: str
     longUnrevForcedOutagesFetchUrl: str
+    oauth_app_client_id: str
+    oauth_app_client_secret: str
+    oauth_provider_discovery_url: str

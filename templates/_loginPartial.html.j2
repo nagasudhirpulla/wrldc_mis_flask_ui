@@ -1,9 +1,9 @@
 <ul class="navbar-nav ml-auto">
-    {% if user %}
+    {% if current_user.is_authenticated %}
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-lg-inline text-gray-600">{{user.name}}</span>
+                <span class="mr-2 d-lg-inline text-gray-600">{{current_user.name}}</span>
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
@@ -12,15 +12,16 @@
                     Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                <form class="form-inline">
-                    <button type="submit" class="btn btn-link dropdown-item"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</button>
-                </form>
+                <a class="dropdown-item" href='/oauth/logout'>
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Logout
+                </a>
             </div>
         </li>
     {% else %}
         <li class="nav-item">
-            <a class="nav-link" href='#'>
-                <span class="mr-2 d-lg-inline text-gray-600">Hello</span>
+            <a class="nav-link" href='/oauth/login'>
+                <span class="mr-2 d-lg-inline text-gray-600">Login</span>
             </a>
         </li>
     {% endif %}

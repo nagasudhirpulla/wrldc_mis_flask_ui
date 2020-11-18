@@ -3,6 +3,7 @@ This is the web server that acts as a service that creates outages raw data
 '''
 from src.appConfig import getConfig
 from flask import Flask, request, jsonify, render_template
+from src.routeControllers.oauth import login_manager, oauthPage
 from src.services.rawOutagesCreationHandler import RawOutagesCreationHandler
 from src.services.rawPairAnglesCreationHandler import RawPairAnglesCreationHandler
 from src.services.rawFreqCreationHandler import RawFrequencyCreationHandler
@@ -30,6 +31,9 @@ from src.routeControllers.transOutages import transOutagesPage
 from src.routeControllers.majorGenOutages import majorGenOutagesPage
 from src.routeControllers.longTimeUnrevForcedOutages import longUnrevForcedOutagesPage
 
+# set this variable since we are currently not running this app on SSL
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
 app = Flask(__name__)
 
 # get application config
@@ -44,12 +48,15 @@ app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 # valid file extensions
 app.config['UPLOAD_EXTENSIONS'] = ['.xlsx']
 
+# User session management setup
+login_manager.init_app(app)
 
 @app.route('/')
-def hello():
+def index():
     return render_template('home.html.j2')
 
 
+app.register_blueprint(oauthPage, url_prefix='/oauth')
 app.register_blueprint(createRawOutagesPage, url_prefix='/createRawOutages')
 app.register_blueprint(derviedFreqPage, url_prefix='/derivedFreq')
 app.register_blueprint(iegcViolMsgsPage, url_prefix='/iegcViolMsgs')
