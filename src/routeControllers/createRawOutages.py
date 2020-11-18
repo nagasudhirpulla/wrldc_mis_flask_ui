@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, render_template, request
 from src.appConfig import getConfig
 from src.services.rawOutagesCreationHandler import RawOutagesCreationHandler
+from src.security.decorators import role_required
 import datetime as dt
 
 # get application config
@@ -11,6 +12,7 @@ createRawOutagesPage = Blueprint('createRawOutages', __name__,
 
 
 @createRawOutagesPage.route('/', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createRawOutages():
     # in case of post request, create raw outages and return json response
     if request.method == 'POST':

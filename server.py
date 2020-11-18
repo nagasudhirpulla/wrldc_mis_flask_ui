@@ -4,6 +4,7 @@ This is the web server that acts as a service that creates outages raw data
 from src.appConfig import getConfig
 from flask import Flask, request, jsonify, render_template
 from src.routeControllers.oauth import login_manager, oauthPage
+from src.security.errorHandlers import page_forbidden, page_not_found, page_unauthorized
 from src.services.rawOutagesCreationHandler import RawOutagesCreationHandler
 from src.services.rawPairAnglesCreationHandler import RawPairAnglesCreationHandler
 from src.services.rawFreqCreationHandler import RawFrequencyCreationHandler
@@ -30,6 +31,7 @@ from src.routeControllers.outages import outagesPage
 from src.routeControllers.transOutages import transOutagesPage
 from src.routeControllers.majorGenOutages import majorGenOutagesPage
 from src.routeControllers.longTimeUnrevForcedOutages import longUnrevForcedOutagesPage
+from src.security.decorators import role_required
 
 # set this variable since we are currently not running this app on SSL
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -51,11 +53,14 @@ app.config['UPLOAD_EXTENSIONS'] = ['.xlsx']
 # User session management setup
 login_manager.init_app(app)
 
+
 @app.route('/')
 def index():
     return render_template('home.html.j2')
 
-
+app.register_error_handler(401, page_unauthorized)
+app.register_error_handler(403, page_forbidden)
+app.register_error_handler(404, page_not_found)
 app.register_blueprint(oauthPage, url_prefix='/oauth')
 app.register_blueprint(createRawOutagesPage, url_prefix='/createRawOutages')
 app.register_blueprint(derviedFreqPage, url_prefix='/derivedFreq')
@@ -63,12 +68,14 @@ app.register_blueprint(iegcViolMsgsPage, url_prefix='/iegcViolMsgs')
 app.register_blueprint(outagesPage, url_prefix='/outages')
 app.register_blueprint(transOutagesPage, url_prefix='/transOutages')
 app.register_blueprint(majorGenOutagesPage, url_prefix='/majorGenOutages')
-app.register_blueprint(longUnrevForcedOutagesPage, url_prefix='/longUnrevForcedOutages')
+app.register_blueprint(longUnrevForcedOutagesPage,
+                       url_prefix='/longUnrevForcedOutages')
 app.register_blueprint(weeklyReportsPage,
                        url_prefix='/weeklyReports')
 
 
 @app.route('/createRawPairAngles', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createRawPairAngles():
     # in case of post request, create raw pair angles and return json response
     if request.method == 'POST':
@@ -84,6 +91,7 @@ def createRawPairAngles():
 
 
 @app.route('/createRawFreq', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createRawFreq():
     # in case of post request, create raw freq and return json response
     if request.method == 'POST':
@@ -99,6 +107,7 @@ def createRawFreq():
 
 
 @app.route('/createRawVolt', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createRawVolt():
     # in case of post request, create raw voltage and return json response
     if request.method == 'POST':
@@ -114,6 +123,7 @@ def createRawVolt():
 
 
 @app.route('/createDerFreq', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createDerFreq():
     # in case of post request, create derived frequency and return json response
     if request.method == 'POST':
@@ -129,6 +139,7 @@ def createDerFreq():
 
 
 @app.route('/createDerVolt', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createDerVolt():
     # in case of post request, create derived voltage and return json response
     if request.method == 'POST':
@@ -144,6 +155,7 @@ def createDerVolt():
 
 
 @app.route('/createDerVdi', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createDerVdi():
     # in case of post request, create derived voltage and return json response
     if request.method == 'POST':
@@ -159,6 +171,7 @@ def createDerVdi():
 
 
 @app.route('/createIegcViolMsgs', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createIegcViolMsgs():
     # in case of post request, create iegc violation messages and return reponse
     if request.method == 'POST':
@@ -177,6 +190,7 @@ def createIegcViolMsgs():
 
 
 @app.route('/createTransmissionConstraints', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createTransmissionConstraints():
     # in case of post request, create transmission constraints data and return reponse
     if request.method == 'POST':
@@ -196,6 +210,7 @@ def createTransmissionConstraints():
 
 
 @app.route('/createIctConstraints', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createIctConstraints():
     # in case of post request, create ict constraints data and return reponse
     if request.method == 'POST':
@@ -214,6 +229,7 @@ def createIctConstraints():
 
 
 @app.route('/createHighVoltageNode', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createHighVoltageNode():
     # in case of post request, create ict constraints data and return reponse
     if request.method == 'POST':
@@ -232,6 +248,7 @@ def createHighVoltageNode():
 
 
 @app.route('/createLowVoltageNode', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createLowVoltageNode():
     # in case of post request, create ict constraints data and return reponse
     if request.method == 'POST':

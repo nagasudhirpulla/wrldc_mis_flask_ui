@@ -4,7 +4,7 @@ import os
 from src.appConfig import getConfig
 from src.services.weeklyReportCreationHandler import WeeklyReportCreationHandler
 from src.utils.stringUtils import getReadableByteSize, getTimeStampString
-
+from src.security.decorators import role_required
 
 # get application config
 appConfig = getConfig()
@@ -14,6 +14,7 @@ weeklyReportsPage = Blueprint('weeklyReport', __name__,
 
 
 @weeklyReportsPage.route('/create', methods=['GET', 'POST'])
+@role_required('mis_admin')
 def createWeeklyReport():
     # in case of post request, create weekly report and return json response
     if request.method == 'POST':

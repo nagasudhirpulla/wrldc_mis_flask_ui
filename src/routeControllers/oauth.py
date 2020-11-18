@@ -1,8 +1,7 @@
-from flask import Blueprint, redirect, request, url_for, session
+from flask import Blueprint, redirect, request, url_for, session, render_template
 import requests
 import json
 from oauthlib.oauth2 import WebApplicationClient
-from flask_login import UserMixin
 
 from flask_login import (
     LoginManager,
@@ -12,18 +11,7 @@ from flask_login import (
 )
 
 from src.appConfig import getConfig
-
-
-class User(UserMixin):
-    def __init__(self, id_, name, email, roles):
-        self.id = id_
-        self.name = name
-        self.email = email
-        self.roles = roles
-
-    def has_role(self, role):
-        return role in self.roles
-
+from src.security.user import User
 
 login_manager = LoginManager()
 
@@ -44,12 +32,6 @@ client = WebApplicationClient(oauth_app_client_id)
 
 def get_oauth_provider_cfg():
     return requests.get(oauth_provider_discovery_url, verify=False).json()
-
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    return "You must be logged in to access this content.", 403
-
 
 # Flask-Login helper to retrieve a user from our db
 @login_manager.user_loader
