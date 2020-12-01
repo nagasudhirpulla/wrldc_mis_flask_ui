@@ -32,6 +32,8 @@ from src.routeControllers.transOutages import transOutagesPage
 from src.routeControllers.majorGenOutages import majorGenOutagesPage
 from src.routeControllers.longTimeUnrevForcedOutages import longUnrevForcedOutagesPage
 from src.security.decorators import role_required
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.exceptions import NotFound
 
 # set this variable since we are currently not running this app on SSL
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -57,6 +59,7 @@ login_manager.init_app(app)
 @app.route('/')
 def index():
     return render_template('home.html.j2')
+
 
 app.register_error_handler(401, page_unauthorized)
 app.register_error_handler(403, page_forbidden)
@@ -266,9 +269,16 @@ def createLowVoltageNode():
     return render_template('createLowVoltageNode.html.j2')
 
 
+hostedApp = Flask(__name__)
+
+hostedApp.wsgi_app = DispatcherMiddleware(NotFound(), {
+    "/mis_dashboard": app
+})
+
 if __name__ == '__main__':
     serverMode: str = appConfig['mode']
     if serverMode.lower() == 'd':
-        app.run(host="0.0.0.0", port=int(appConfig['flaskPort']), debug=True)
+        hostedApp.run(host="0.0.0.0", port=int(
+            appConfig['flaskPort']), debug=True)
     else:
         serve(app, host='0.0.0.0', port=int(appConfig['flaskPort']), threads=1)
