@@ -39,6 +39,7 @@ from werkzeug.exceptions import NotFound
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)
+appPrefix = "/mis_dashboard"
 
 # get application config
 appConfig = getConfig()
@@ -64,17 +65,17 @@ def index():
 app.register_error_handler(401, page_unauthorized)
 app.register_error_handler(403, page_forbidden)
 app.register_error_handler(404, page_not_found)
-app.register_blueprint(oauthPage, url_prefix='/oauth')
-app.register_blueprint(createRawOutagesPage, url_prefix='/createRawOutages')
-app.register_blueprint(derviedFreqPage, url_prefix='/derivedFreq')
-app.register_blueprint(iegcViolMsgsPage, url_prefix='/iegcViolMsgs')
-app.register_blueprint(outagesPage, url_prefix='/outages')
-app.register_blueprint(transOutagesPage, url_prefix='/transOutages')
-app.register_blueprint(majorGenOutagesPage, url_prefix='/majorGenOutages')
+app.register_blueprint(oauthPage, url_prefix=appPrefix+'/oauth')
+app.register_blueprint(createRawOutagesPage, url_prefix=appPrefix+'/createRawOutages')
+app.register_blueprint(derviedFreqPage, url_prefix=appPrefix+'/derivedFreq')
+app.register_blueprint(iegcViolMsgsPage, url_prefix=appPrefix+'/iegcViolMsgs')
+app.register_blueprint(outagesPage, url_prefix=appPrefix+'/outages')
+app.register_blueprint(transOutagesPage, url_prefix=appPrefix+'/transOutages')
+app.register_blueprint(majorGenOutagesPage, url_prefix=appPrefix+'/majorGenOutages')
 app.register_blueprint(longUnrevForcedOutagesPage,
-                       url_prefix='/longUnrevForcedOutages')
+                       url_prefix=appPrefix+'/longUnrevForcedOutages')
 app.register_blueprint(weeklyReportsPage,
-                       url_prefix='/weeklyReports')
+                       url_prefix=appPrefix+'/weeklyReports')
 
 
 @app.route('/createRawPairAngles', methods=['GET', 'POST'])
@@ -272,7 +273,7 @@ def createLowVoltageNode():
 hostedApp = Flask(__name__)
 
 hostedApp.wsgi_app = DispatcherMiddleware(NotFound(), {
-    "/mis_dashboard": app
+    appPrefix: app
 })
 
 if __name__ == '__main__':
