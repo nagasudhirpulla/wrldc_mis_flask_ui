@@ -5,6 +5,7 @@ class IAppConfig(TypedDict):
     flaskSecret: str
     flaskPort: str
     mode: str
+    appPrefix: str
     rawOutagesCreationServiceUrl: str
     rawPairAnglesCreationServiceUrl: str
     rawFrequencyCreationServiceUrl: str

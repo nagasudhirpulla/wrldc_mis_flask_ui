@@ -40,10 +40,13 @@ from typing import Any, cast
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)
-appPrefix = "/mis_dashboard"
 
 # get application config
 appConfig = getConfig()
+
+appPrefix = appConfig["appPrefix"]
+if pd.isna(appPrefix):
+    appPrefix = ""
 
 # Set the secret key to some random bytes
 app.secret_key = appConfig['flaskSecret']
