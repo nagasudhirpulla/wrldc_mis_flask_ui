@@ -19,7 +19,7 @@
         {% for fileObj in data['files'] %}
         <tr>
             <td>
-                <a href="{{ (request.path + '/' if request.path != '/' else '') + fileObj['name'] }}">
+                <a href="{{ url_for('weeklyReports.showWeeklyReports', req_path=fileObj['name']) }}">
                     {{ fileObj['name'] }}
                 </a>
             </td>

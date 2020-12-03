@@ -12,7 +12,7 @@
                     Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href='/oauth/logout'>
+                <a class="dropdown-item" href="{{ url_for('oauth.logout') }}">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>
@@ -20,7 +20,7 @@
         </li>
     {% else %}
         <li class="nav-item">
-            <a class="nav-link" href='/oauth/login'>
+            <a class="nav-link" href="{{ url_for('oauth.login') }}">
                 <span class="mr-2 d-lg-inline text-gray-600">Login</span>
             </a>
         </li>

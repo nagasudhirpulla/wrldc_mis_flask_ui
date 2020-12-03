@@ -34,6 +34,7 @@ from src.routeControllers.longTimeUnrevForcedOutages import longUnrevForcedOutag
 from src.security.decorators import role_required
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from werkzeug.exceptions import NotFound
+from typing import Any, cast
 
 # set this variable since we are currently not running this app on SSL
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -65,17 +66,17 @@ def index():
 app.register_error_handler(401, page_unauthorized)
 app.register_error_handler(403, page_forbidden)
 app.register_error_handler(404, page_not_found)
-app.register_blueprint(oauthPage, url_prefix=appPrefix+'/oauth')
-app.register_blueprint(createRawOutagesPage, url_prefix=appPrefix+'/createRawOutages')
-app.register_blueprint(derviedFreqPage, url_prefix=appPrefix+'/derivedFreq')
-app.register_blueprint(iegcViolMsgsPage, url_prefix=appPrefix+'/iegcViolMsgs')
-app.register_blueprint(outagesPage, url_prefix=appPrefix+'/outages')
-app.register_blueprint(transOutagesPage, url_prefix=appPrefix+'/transOutages')
-app.register_blueprint(majorGenOutagesPage, url_prefix=appPrefix+'/majorGenOutages')
+app.register_blueprint(oauthPage, url_prefix='/oauth')
+app.register_blueprint(createRawOutagesPage, url_prefix='/createRawOutages')
+app.register_blueprint(derviedFreqPage, url_prefix='/derivedFreq')
+app.register_blueprint(iegcViolMsgsPage, url_prefix='/iegcViolMsgs')
+app.register_blueprint(outagesPage, url_prefix='/outages')
+app.register_blueprint(transOutagesPage, url_prefix='/transOutages')
+app.register_blueprint(majorGenOutagesPage, url_prefix='/majorGenOutages')
 app.register_blueprint(longUnrevForcedOutagesPage,
-                       url_prefix=appPrefix+'/longUnrevForcedOutages')
+                       url_prefix='/longUnrevForcedOutages')
 app.register_blueprint(weeklyReportsPage,
-                       url_prefix=appPrefix+'/weeklyReports')
+                       url_prefix='/weeklyReports')
 
 
 @app.route('/createRawPairAngles', methods=['GET', 'POST'])
@@ -232,9 +233,9 @@ def createIctConstraints():
     return render_template('createIctConstraints.html.j2')
 
 
-@app.route('/createHighVoltageNode', methods=['GET', 'POST'])
+@app.route('/createHighVoltageNodes', methods=['GET', 'POST'])
 @role_required('mis_admin')
-def createHighVoltageNode():
+def createHighVoltageNodes():
     # in case of post request, create ict constraints data and return reponse
     if request.method == 'POST':
         reqFile = request.files.get('inpFile')
@@ -251,9 +252,9 @@ def createHighVoltageNode():
     return render_template('createHighVoltageNode.html.j2')
 
 
-@app.route('/createLowVoltageNode', methods=['GET', 'POST'])
+@app.route('/createLowVoltageNodes', methods=['GET', 'POST'])
 @role_required('mis_admin')
-def createLowVoltageNode():
+def createLowVoltageNodes():
     # in case of post request, create ict constraints data and return reponse
     if request.method == 'POST':
         reqFile = request.files.get('inpFile')
@@ -272,7 +273,7 @@ def createLowVoltageNode():
 
 hostedApp = Flask(__name__)
 
-hostedApp.wsgi_app = DispatcherMiddleware(NotFound(), {
+cast(Any, hostedApp).wsgi_app = DispatcherMiddleware(NotFound(), {
     appPrefix: app
 })
 
@@ -282,4 +283,5 @@ if __name__ == '__main__':
         hostedApp.run(host="0.0.0.0", port=int(
             appConfig['flaskPort']), debug=True)
     else:
-        serve(app, host='0.0.0.0', port=int(appConfig['flaskPort']), threads=1)
+        serve(app, host='0.0.0.0', port=int(
+            appConfig['flaskPort']), url_prefix=appPrefix, threads=1)

@@ -9,7 +9,7 @@ from src.security.decorators import role_required
 # get application config
 appConfig = getConfig()
 
-weeklyReportsPage = Blueprint('weeklyReport', __name__,
+weeklyReportsPage = Blueprint('weeklyReports', __name__,
                               template_folder='templates')
 
 
@@ -31,7 +31,7 @@ def createWeeklyReport():
 
 @weeklyReportsPage.route('/list', defaults={'req_path': ''})
 @weeklyReportsPage.route('/list/<path:req_path>')
-def showWeeklyReport(req_path):
+def showWeeklyReports(req_path):
     BASE_DIR = appConfig['weeklyReportsFolderPath']
 
     # Joining the base and the requested path

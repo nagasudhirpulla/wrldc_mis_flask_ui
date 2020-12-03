@@ -14,9 +14,9 @@
     </a>
     <div id="collapseFreq" class="collapse" aria-labelledby="headingFreq" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/createRawFreq">Create Frequency</a>
-        <a class="collapse-item" href="/createDerFreq">Create Derived <br/>Frequency</a>
-        <a class="collapse-item" href="/derivedFreq">Show Daily <br/>Frequency</a>
+        <a class="collapse-item" href="{{ url_for('createRawFreq') }}">Create Frequency</a>
+        <a class="collapse-item" href="{{ url_for('createDerFreq') }}">Create Derived <br/>Frequency</a>
+        <a class="collapse-item" href="{{ url_for('derivedFreq.displayDerivedFrequency') }}">Show Daily <br/>Frequency</a>
         </div>
     </div>
 </li>
@@ -26,9 +26,9 @@
     </a>
     <div id="collapseVolt" class="collapse" aria-labelledby="headingVolt" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/createRawVolt">Create Voltage</a>
-        <a class="collapse-item" href="/createDerVolt">Create Derived <br/>Voltage</a>
-        <a class="collapse-item" href="/createDerVdi">Create Derived VDI</a>
+        <a class="collapse-item" href="{{ url_for('createRawVolt') }}">Create Voltage</a>
+        <a class="collapse-item" href="{{ url_for('createDerVolt') }}">Create Derived <br/>Voltage</a>
+        <a class="collapse-item" href="{{ url_for('createDerVdi') }}">Create Derived VDI</a>
         </div>
     </div>
 </li>
@@ -38,34 +38,34 @@
     </a>
     <div id="collapseOutages" class="collapse" aria-labelledby="headingOutages" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/majorGenOutages">Show Major <br/>Generator Outages</a>
-        <a class="collapse-item" href="/transOutages">Show Transmission <br/>Outages</a>
-        <a class="collapse-item" href="/longUnrevForcedOutages">Show Long Time <br/>Unrevived Forced <br/>Outages</a>
-        <a class="collapse-item" href="/outages">Show all Outages</a>
-        <a class="collapse-item" href="/createRawOutages">Create Outages</a>
+        <a class="collapse-item" href="{{ url_for('majorGenOutages.displayMajorGenOutages') }}">Show Major <br/>Generator Outages</a>
+        <a class="collapse-item" href="{{ url_for('transOutages.displayTransOutages') }}">Show Transmission <br/>Outages</a>
+        <a class="collapse-item" href="{{ url_for('longUnrevForcedOutages.displayLongUnrevForcedOutages') }}">Show Long Time <br/>Unrevived Forced <br/>Outages</a>
+        <a class="collapse-item" href="{{ url_for('outages.displayOutages') }}">Show all Outages</a>
+        <a class="collapse-item" href="{{ url_for('createRawOutages.createRawOutages') }}">Create Outages</a>
         </div>
     </div>
 </li>
 <li class="nav-item text-uppercase">
-    <a class="nav-link" href='/createTransmissionConstraints'>
+    <a class="nav-link" href="{{ url_for('createTransmissionConstraints') }}">
         <i class="fas fa-th-large"></i>
         <span>Transmission Constraints</span>
     </a>
 </li>
 <li class="nav-item text-uppercase">
-    <a class="nav-link" href='/createIctConstraints'>
+    <a class="nav-link" href="{{ url_for('createIctConstraints') }}">
         <i class="fas fa-th-large"></i>
         <span>ICT Constraints</span>
     </a>
 </li>
 <li class="nav-item text-uppercase">
-    <a class="nav-link" href='/createHighVoltageNode'>
+    <a class="nav-link" href="{{ url_for('createHighVoltageNodes') }}">
         <i class="fas fa-th-large"></i>
         <span>High Voltage Nodes</span>
     </a>
 </li>
 <li class="nav-item text-uppercase">
-    <a class="nav-link" href='/createLowVoltageNode'>
+    <a class="nav-link" href="{{ url_for('createLowVoltageNodes') }}">
         <i class="fas fa-th-large"></i>
         <span>Low Voltage Nodes</span>
     </a>
@@ -76,13 +76,13 @@
     </a>
     <div id="collapseIViol" class="collapse" aria-labelledby="headingIViol" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/createIegcViolMsgs">Create IEGC <br/>Violation Msgs</a>
-        <a class="collapse-item" href="/iegcViolMsgs">Show IEGC <br/>Violation Msgs</a>
+        <a class="collapse-item" href="{{ url_for('createIegcViolMsgs') }}">Create IEGC <br/>Violation Msgs</a>
+        <a class="collapse-item" href="{{ url_for('iegcViolMsgs.displayIegcViolMsgs') }}">Show IEGC <br/>Violation Msgs</a>
         </div>
     </div>
 </li>
 <li class="nav-item text-uppercase">
-    <a class="nav-link" href='/createRawPairAngles'>
+    <a class="nav-link" href="{{ url_for('createRawPairAngles') }}">
         <i class="fas fa-th-large"></i>
         <span>Pair Angles</span>
     </a>
@@ -93,8 +93,8 @@
     </a>
     <div id="collapseWReps" class="collapse" aria-labelledby="headingWReps" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="/weeklyReports/create">Create Weekly Reports</a>
-        <a class="collapse-item" href="/weeklyReports/list">Show Weekly Reports</a>
+        <a class="collapse-item" href="{{ url_for('weeklyReports.createWeeklyReport') }}">Create Weekly Reports</a>
+        <a class="collapse-item" href="{{ url_for('weeklyReports.showWeeklyReports') }}">Show Weekly Reports</a>
         </div>
     </div>
 </li>
