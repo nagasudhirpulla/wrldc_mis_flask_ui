@@ -2,6 +2,7 @@ from flask import Blueprint, redirect, request, url_for, session, render_templat
 import requests
 import json
 from oauthlib.oauth2 import WebApplicationClient
+import urllib.parse
 
 from flask_login import (
     LoginManager,
@@ -45,10 +46,16 @@ def login():
     # Find out what URL to hit for Google login
     oauth_provider_cfg = get_oauth_provider_cfg()
     authorization_endpoint = oauth_provider_cfg["authorization_endpoint"]
-    redirectUri = request.base_url
-    if redirectUri[-1] == "/":
-        redirectUri = redirectUri[:-1]
-    redirectUri = redirectUri + "/callback"
+    # redirectUri = request.base_url
+    # if redirectUri[-1] == "/":
+    #     redirectUri = redirectUri[:-1]
+    # redirectUri = redirectUri + "/callback"
+
+    originalHost = request.host
+    if 'x-original-host' in request.headers:
+        originalHost = request.headers['x-original-host']
+    pathForCallback = url_for(".callback")
+    redirectUri = urllib.parse.urljoin(originalHost, pathForCallback)
 
     # Use library to construct the request for login and provide
     # scopes that let you retrieve user's profile from Google
