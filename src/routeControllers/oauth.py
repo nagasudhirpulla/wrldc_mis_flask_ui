@@ -35,6 +35,8 @@ def get_oauth_provider_cfg():
     return requests.get(oauth_provider_discovery_url, verify=False).json()
 
 # Flask-Login helper to retrieve a user from our db
+
+
 @login_manager.user_loader
 def load_user(user_id):
     sUser = session['SUSER']
@@ -51,12 +53,17 @@ def login():
     #     redirectUri = redirectUri[:-1]
     # redirectUri = redirectUri + "/callback"
 
-    originalHost = request.host
+    requestScheme = 'https://' if request.is_secure else 'http://'
+    redirectUri = urllib.parse.urljoin(
+        requestScheme+request.host, url_for(".callback"))
     if 'x-original-host' in request.headers:
+        # https://stackoverflow.com/a/38726543/2746323
         originalHost = request.headers['x-original-host']
-    pathForCallback = url_for(".callback")
-    redirectUri = urllib.parse.urljoin(originalHost, pathForCallback)
-
+        requestScheme = 'https://' if (
+            'x-arr-ssl' in request.headers) else 'http://'
+        pathForCallback = url_for(".callback")
+        redirectUri = urllib.parse.urljoin(
+            requestScheme+originalHost, pathForCallback)
     # Use library to construct the request for login and provide
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
