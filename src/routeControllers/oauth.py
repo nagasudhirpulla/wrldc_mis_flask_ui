@@ -170,9 +170,21 @@ def logout():
     if "id_token" in client.token:
         endSessionEndpoint = oauth_provider_cfg["end_session_endpoint"]
         idToken = client.token["id_token"]
-        redirectUrl = request.host_url
+        # make redirect url as home page
+        requestScheme = 'https://' if request.is_secure else 'http://'
+        pathForCallback = url_for("index")
+        redirectUri = urllib.parse.urljoin(
+            requestScheme+request.host, pathForCallback)
+        # handle reverse proxy
+        if 'x-original-host' in request.headers:
+            # manipulate redirectUrl as per reverse proxy host
+            originalHost = request.headers['x-original-host']
+            originalRequestScheme = 'https://' if (
+                'x-arr-ssl' in request.headers) else 'http://'
+            redirectUri = urllib.parse.urljoin(
+                originalRequestScheme+originalHost, pathForCallback)
         logoutUrl = "{0}?id_token_hint={1}&post_logout_redirect_uri={2}".format(
-            endSessionEndpoint, idToken, redirectUrl)
+            endSessionEndpoint, idToken, redirectUri)
         return redirect(logoutUrl)
     else:
         return redirect(url_for("index"))
