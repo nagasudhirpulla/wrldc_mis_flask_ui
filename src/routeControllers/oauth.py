@@ -84,11 +84,30 @@ def callback():
     oauth_provider_cfg = get_oauth_provider_cfg()
     token_endpoint = oauth_provider_cfg["token_endpoint"]
 
+    authResponse = request.url
+    redirectUri = request.base_url
+
+    # handle reverse proxy
+    if 'x-original-host' in request.headers:
+        # manipulate redirectUrl as per reverse proxy host
+        originalHost = request.headers['x-original-host']
+        originalRequestScheme = 'https://' if (
+            'x-arr-ssl' in request.headers) else 'http://'
+        pathForCallback = url_for(".callback")
+        redirectUri = urllib.parse.urljoin(
+            originalRequestScheme+originalHost, pathForCallback)
+        # manipulate authResponse as per reverse proxy host
+        authResponse.replace(request.host, originalHost)
+        if (originalRequestScheme == "https://") and authResponse.startswith("http://"):
+            authResponse.replace("http://", "https://")
+        if (originalRequestScheme == "http://") and authResponse.startswith("https://"):
+            authResponse.replace("https://", "http://")
+
     # Prepare and send request to get tokens! Yay tokens!
     token_url, headers, body = client.prepare_token_request(
         token_endpoint,
         authorization_response=request.url,
-        redirect_url=request.base_url,
+        redirect_url=redirectUri,
         code=code,
     )
     token_response = requests.post(
