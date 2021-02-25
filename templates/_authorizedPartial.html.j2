@@ -98,3 +98,13 @@
         </div>
     </div>
 </li>
+<li class="nav-item text-uppercase">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMReps" aria-expanded="false" aria-controls="collapseMReps">
+        <span>Monthly Reports</span>
+    </a>
+    <div id="collapseMReps" class="collapse" aria-labelledby="headingMReps" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{{ url_for('monthlyReports.createMonthlyReport') }}">Create Monthly Reports</a>
+        </div>
+    </div>
+</li>

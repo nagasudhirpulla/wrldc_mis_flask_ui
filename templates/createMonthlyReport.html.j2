@@ -1,0 +1,31 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}Create Monthly Report{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<h1>Generate monthly MIS report</h1>
+<form method="post">
+<div class="row align-content-center">
+    <input id="monthInp" class="form-inline bg-light border-1" type="text" />
+    <button id="createMonthlyReportBtn" class="btn btn-success btn-icon-split ml-3" type="submit">
+        <span class="icon text-white-50">
+            <i class="fas fa-sync"></i>
+        </span>
+        <span class="text">Generate Report</span>
+    </button>
+</div>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery.monthpicker.min.js') }}"></script>
+    <script>
+    $(document).ready(function() {
+        $('#monthInp').monthpicker({'minYear' : 2021, 'maxYear' : 2050});
+    });
+    </script>
+{% endblock %}
