@@ -25,6 +25,7 @@ import os
 from waitress import serve
 from src.routeControllers.createRawOutages import createRawOutagesPage
 from src.routeControllers.weeklyReports import weeklyReportsPage
+from src.routeControllers.violationReports import violationReportsPage
 from src.routeControllers.monthlyReports import monthlyReportsPage
 from src.routeControllers.derivedFreq import derviedFreqPage
 from src.routeControllers.iegcViolMsgs import iegcViolMsgsPage
@@ -81,6 +82,8 @@ app.register_blueprint(longUnrevForcedOutagesPage,
                        url_prefix='/longUnrevForcedOutages')
 app.register_blueprint(weeklyReportsPage,
                        url_prefix='/weeklyReports')
+app.register_blueprint(violationReportsPage,
+                       url_prefix='/violationReports')
 app.register_blueprint(monthlyReportsPage,
                        url_prefix='/monthlyReports')
 

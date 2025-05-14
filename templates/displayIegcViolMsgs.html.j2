@@ -33,6 +33,8 @@
                 <th class="th-sm">Schedule</th>
                 <th class="th-sm">Drawal</th>
                 <th class="th-sm">Deviation</th>
+                <th class="th-sm">Message Type</th>
+                <th class="th-sm">Issued File</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +46,8 @@
                     <th>{{row['schedule']}}</th>
                     <th>{{row['drawal']}}</th>
                     <th>{{row['deviation']}}</th>
+                    <th>{{row['messageType']}}</th>
+                    <th><a href="{{ url_for('violationReports.showViolationReports', req_path=row['issuedFile'], folder=row['messageType']) }}">View File</a></th>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -55,6 +59,8 @@
                 <th>Schedule</th>
                 <th>Drawal</th>
                 <th>Deviation</th>
+                <th>Message Type</th>
+                <th>Issued File</th>
                 </tr>
             </tfoot>
         </table>
